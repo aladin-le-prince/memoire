@@ -1,6 +1,5 @@
 
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils import timezone
 import random
 import string
@@ -10,7 +9,7 @@ class PermisConduire(models.Model):
         ('valide', 'Valide'),
         ('suspendu', 'Suspendu')
     ]
-    proprietaire = models.OneToOneField("rootvibe.Proprietaire", on_delete=models.CASCADE)
+    proprietaire = models.OneToOneField("rootvibe.User", on_delete=models.CASCADE)
     numero_permis = models.CharField(max_length=15, unique=True)
     date_delivrance = models.DateField(auto_now_add=True)
     points = models.IntegerField(default=12)
@@ -28,22 +27,37 @@ class PermisConduire(models.Model):
 
 
 
-class Proprietaire(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    nom = models.CharField(max_length=100)
-    prenom = models.CharField(max_length=100)
-    adresse = models.TextField()
-    telephone = models.CharField(max_length=20)
-    email = models.EmailField(blank=True, null=True)
+from django.contrib.auth.models import AbstractUser
+
+
+class User(AbstractUser):
+    """Modèle utilisateur personnalisé avec des rôles"""
+    is_owner = models.BooleanField(default=True)  # Par défaut, un nouvel utilisateur est propriétaire
+    is_agent = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
 
     SEXE_CHOICES = [
         ('M', 'Masculin'),
         ('F', 'Féminin'),
     ]
-    sexe = models.CharField(choices=SEXE_CHOICES, max_length=1)
+    sexe = models.CharField(choices=SEXE_CHOICES, max_length=1, blank=True, null=True)
+    telephone = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.prenom} {self.nom}"
+        return f"{self.first_name} {self.last_name} ({'Propriétaire' if self.is_owner else 'Agent' if self.is_agent else 'Admin'})"
+    
+    def to_agent(self):
+        self.is_owner = False
+        self.is_admin = False
+        self.is_agent = True
+        self.save()
+
+    def to_admin(self):
+        self.is_owner= False
+        self.is_agent = False
+        self.is_admin = False
+        self.save()
+
 
 def generer_plaque_immatriculation():
     lettres_avant = ''.join(random.choices(string.ascii_uppercase, k=3))
@@ -52,7 +66,7 @@ def generer_plaque_immatriculation():
     return f"{lettres_avant} {chiffres} {lettres_apres}"
 
 class Vehicule(models.Model):
-    proprietaire = models.ForeignKey(Proprietaire, on_delete=models.CASCADE)
+    proprietaire = models.ForeignKey(User, on_delete=models.CASCADE)
     marque = models.CharField(max_length=100)
     modele = models.CharField(max_length=100)
     couleur = models.CharField(max_length=50)
@@ -75,7 +89,7 @@ class DemandePlaque(models.Model):
         ('approuve', 'Approuvé'),
         ('rejete', 'Rejeté'),
     ]
-    proprietaire = models.ForeignKey(Proprietaire, on_delete=models.CASCADE)
+    proprietaire = models.ForeignKey(User, on_delete=models.CASCADE)
     vehicule = models.OneToOneField(Vehicule, on_delete=models.CASCADE)
     date_demande = models.DateField(auto_now_add=True)
     statut = models.CharField(choices=STATUT_CHOICES, max_length=10, default='attente')

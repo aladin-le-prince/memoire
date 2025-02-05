@@ -5,44 +5,25 @@ from django.shortcuts import render, redirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
-from .models import PermisConduire, Proprietaire, DemandePlaque
+from .models import PermisConduire, User, DemandePlaque
 
-from .models import Vehicule, Proprietaire, Infraction, Photo, PhotoType
-from .forms import VehiculeForm, ProprietaireForm, InfractionForm, PhotoForm, UserForm
+from .models import Vehicule,  Infraction, Photo, PhotoType
+from .forms import VehiculeForm, InfractionForm, PhotoForm
 from django.contrib.auth.decorators import login_required
 
-from .forms import PermisConduireForm,DemandePlaqueForm
+from .forms import PermisConduireForm,DemandePlaqueForm, CustomUserCreationForm
 
-# Fonctions utilitaires pour vérifier les rôles
-
-def is_admin(user):
-    return user.groups.filter(name='admin').exists()
-
-def is_agent(user):
-    return user.groups.filter(name='agent').exists()
-
-def is_proprietaire(user):
-    return user.groups.filter(name='proprietaire').exists()
 
 # Vue d'accueil
+@login_required
 def home(request):
-    if request.user.is_authenticated:
-        if is_admin(request.user):
-            return redirect('user_management')
-        elif is_agent(request.user):
-            return redirect('search_vehicle')
-        elif is_proprietaire(request.user):
-            return redirect('owner_portal')
-
-    # Ajoute les rôles au contexte
-    context = {
-        'is_admin': is_admin(request.user) if request.user.is_authenticated else False,
-        'is_agent': is_agent(request.user) if request.user.is_authenticated else False,
-        'is_proprietaire': is_proprietaire(request.user) if request.user.is_authenticated else False,
-    }
-    return render(request, 'home.html', context)
+    if request.user.is_owner:
+        return redirect('owner_portal')
+    elif request.user.is_agent:
+        return redirect('search_vehicle')
+    elif request.user.is_admin:
+        return redirect('user_management')
 
 # Connexion
 def login_view(request):
@@ -65,52 +46,53 @@ def logout_view(request):
 # Inscription (pour les propriétaires)
 def register(request):
     if request.method == 'POST':
-        form = UserForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect('home')  # Rediriger vers la page de connexion ou autre
     else:
-        form = UserForm()
+        form = CustomUserCreationForm()
     return render(request, 'auth/register.html', {'form': form})
+
 
 # Gestion des utilisateurs (admin)
 @login_required
-@user_passes_test(is_admin)
+
 def user_management(request):
     users = User.objects.all()
     return render(request, 'admin/user_management.html', {'users': users})
 
 # Ajouter un utilisateur (admin)
 @login_required
-@user_passes_test(is_admin)
+
 def add_user(request):
     if request.method == 'POST':
-        form = UserForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('user_management')
     else:
-        form = UserForm()
+        form = CustomUserCreationForm()
     return render(request, 'admin/add_user.html', {'form': form})
 
 # Modifier un utilisateur (admin)
 @login_required
-@user_passes_test(is_admin)
+
 def edit_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
-        form = UserForm(request.POST, instance=user)
+        form = CustomUserCreationForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
             return redirect('user_management')
     else:
-        form = UserForm(instance=user)
+        form = CustomUserCreationForm(instance=user)
     return render(request, 'admin/edit_user.html', {'form': form})
 
 # Supprimer un utilisateur (admin)
 @login_required
-@user_passes_test(is_admin)
+
 def delete_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     user.delete()
@@ -118,23 +100,23 @@ def delete_user(request, user_id):
 
 # Rechercher un véhicule (agent)
 @login_required
-@user_passes_test(is_agent)
+
 def search_vehicle(request):
-    if request.method == 'GET':
-        plaque = request.GET.get('plaque', '')
+    if request.method == 'POST':
+        plaque = request.POST.get('plaque', '')
         vehicules = Vehicule.objects.filter(plaque_immatriculation__icontains=plaque)
         return render(request, 'agent/search_vehicle.html', {'vehicules': vehicules})
     return render(request, 'agent/search_vehicle.html')
 
 # Détails d'un véhicule (agent)
 @login_required
-@user_passes_test(is_agent)
+
 def vehicle_details(request, vehicle_id):
     vehicule = get_object_or_404(Vehicule, id=vehicle_id)
     return render(request, 'agent/vehicle_details.html', {'vehicule': vehicule})
 # Ajouter une infraction (agent)
 @login_required
-@user_passes_test(is_agent)
+
 def add_infraction(request, vehicle_id):
     vehicule = get_object_or_404(Vehicule, id=vehicle_id)
     if request.method == 'POST':
@@ -154,7 +136,7 @@ def list_photos(request):
 
 # Ajouter une photo (agent)
 @login_required
-@user_passes_test(is_agent)
+
 def add_photo(request, vehicle_id):
     vehicule = get_object_or_404(Vehicule, id=vehicle_id)
     if request.method == 'POST':
@@ -177,21 +159,21 @@ def delete_photo(request, photo_id):
 
 # Portail propriétaire
 @login_required
-@user_passes_test(is_proprietaire)
+
 def owner_portal(request):
-    vehicules = Vehicule.objects.filter(proprietaire__user=request.user)
+    vehicules = Vehicule.objects.filter(proprietaire=request.user)
     return render(request, 'owner/owner_portal.html', {'vehicules': vehicules})
 
 # Détails d'un véhicule (propriétaire)
 @login_required
-@user_passes_test(is_proprietaire)
+
 def owner_vehicle_details(request, vehicle_id):
-    vehicule = get_object_or_404(Vehicule, id=vehicle_id, proprietaire__user=request.user)
+    vehicule = get_object_or_404(Vehicule, id=vehicle_id, proprietaire=request.user)
     return render(request, 'owner/owner_vehicle_details.html', {'vehicule': vehicule})
 
 # Statistiques et rapports (admin)
 @login_required
-@user_passes_test(is_admin)
+
 def reports(request):
     # Exemple de statistiques
     total_vehicules = Vehicule.objects.count()
@@ -215,13 +197,13 @@ def list_infractions(request):
     if request.user.is_staff or request.user.is_superuser:
         infractions = Infraction.objects.all()
     else:
-        # Pour un propriétaire, on suppose que l'utilisateur possède une relation vers Proprietaire
+        # Pour un propriétaire, on suppose que l'utilisateur possède une relation vers User
         try:
-            proprietaire = request.user.proprietaire
+            proprietaire = request.user
             # Filtrer les infractions liées aux véhicules appartenant à ce propriétaire
             infractions = Infraction.objects.filter(vehicule__proprietaire=proprietaire)
         except AttributeError:
-            # Si l'utilisateur n'est pas associé à un objet Proprietaire, retourner aucun résultat
+            # Si l'utilisateur n'est pas associé à un objet User, retourner aucun résultat
             infractions = Infraction.objects.none()
     
     context = {
@@ -238,11 +220,11 @@ def owner_infractions(request):
     Affiche les infractions liées aux véhicules du propriétaire connecté.
     """
     try:
-        # On suppose que l'utilisateur possède une relation vers Proprietaire via request.user.proprietaire
-        proprietaire = request.user.proprietaire
+        # On suppose que l'utilisateur possède une relation vers User via request.user.proprietaire
+        proprietaire = request.user
         infractions = Infraction.objects.filter(vehicule__proprietaire=proprietaire)
     except AttributeError:
-        # Si l'utilisateur n'est pas associé à un objet Proprietaire, on renvoie un queryset vide
+        # Si l'utilisateur n'est pas associé à un objet User, on renvoie un queryset vide
         infractions = Infraction.objects.none()
 
     context = {
@@ -253,7 +235,7 @@ def owner_infractions(request):
 
 @login_required
 def demander_permis(request):
-    proprietaire = Proprietaire.objects.get(user=request.user)
+    proprietaire = User.objects.get(user=request.user)
     if request.method == 'POST':
         form = PermisConduireForm(request.POST, request.FILES)
         if form.is_valid():
@@ -282,7 +264,7 @@ def liste_permis(request):
 @login_required
 def demander_plaque(request):
     if request.method == "POST":
-        form = DemandePlaqueForm(request.POST, proprietaire=request.user.proprietaire)
+        form = DemandePlaqueForm(request.POST, proprietaire=request.user)
         if form.is_valid():
             demande = form.save(commit=False)
             demande.proprietaire = request.user.proprietaire

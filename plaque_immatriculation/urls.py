@@ -20,20 +20,19 @@ from rootvibe import views
 from django.contrib.auth import views as auth_views
      
 urlpatterns = [
-    path('admin/', admin.site.urls),
     # URLs de base
-    path('', views.home, name='home'),
+    path('home/', views.home, name='home'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('register/', views.register, name='register'),
     path('password-reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
 
     # URLs pour l'administrateur
-    path('admin/users/', views.user_management, name='user_management'),
-    path('admin/users/add/', views.add_user, name='add_user'),
-    path('admin/users/edit/<int:user_id>/', views.edit_user, name='edit_user'),
-    path('admin/users/delete/<int:user_id>/', views.delete_user, name='delete_user'),
-    path('admin/reports/', views.reports, name='reports'),
+    path('admine/users/', views.user_management, name='user_management'),
+    path('admine/users/add/', views.add_user, name='add_user'),
+    path('admine/users/edit/<int:user_id>/', views.edit_user, name='edit_user'),
+    path('admine/users/delete/<int:user_id>/', views.delete_user, name='delete_user'),
+    path('admine/reports/', views.reports, name='reports'),
 
     # URLs pour l'agent de terrain
     path('agent/search/', views.search_vehicle, name='search_vehicle'),

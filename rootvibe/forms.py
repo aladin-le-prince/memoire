@@ -1,18 +1,21 @@
 from django import forms
-from .models import Proprietaire,DemandePlaque, Vehicule, Infraction, Photo,PermisConduire
-from django.contrib.auth.models import User
+from .models import User,DemandePlaque, Vehicule, Infraction, Photo,PermisConduire
+from django.contrib.auth.forms import UserCreationForm
 
 
-class ProprietaireForm(forms.ModelForm):
-    class Meta:
-        model = Proprietaire
-        fields = '__all__'  
-
-
-class UserForm(forms.ModelForm):
+class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name']
+        # Liste des champs que vous souhaitez proposer lors de l'inscription
+        fields = (
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'telephone',
+            'sexe',
+        )
+
 
 class VehiculeForm(forms.ModelForm):
     class Meta:
