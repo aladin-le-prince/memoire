@@ -1,0 +1,1 @@
+alors c'est simple je veux pouvoir avoir des differents affichage en fonction de qui se connecte , chaque user a ses limites , on a le proprietaire , l'agent et et l'admin ...le propr...peut s'enregistrer , mais pour les restes c'est des demandes , en regardant mon fichier model ca explique moieux la logique
