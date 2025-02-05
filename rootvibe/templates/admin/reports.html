@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Statistiques{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mt-4 mb-4">📊 Statistiques</h1>
+    
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Véhicules enregistrés</h5>
+                    <p class="display-4">{{ total_vehicules }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Infractions totales</h5>
+                    <p class="display-4">{{ total_infractions }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card bg-info text-white shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Utilisateurs actifs</h5>
+                    <p class="display-4">{{ users.count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mt-4">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Répartition des infractions</h5>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info">
+                (Ici vous pouvez ajouter un graphique avec une librairie comme Chart.js)
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

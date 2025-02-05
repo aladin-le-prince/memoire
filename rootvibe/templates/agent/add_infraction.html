@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Enregistrer Infraction{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-danger text-white">
+            <h2 class="mb-0">
+                <i class="bi bi-exclamation-octagon me-2"></i>
+                Nouvelle Infraction - {{ vehicule.plaque_immatriculation }}
+            </h2>
+        </div>
+        
+        <div class="card-body">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Type d'infraction</label>
+                        {{ form.type_infraction }}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label">Date de l'infraction</label>
+                        {{ form.date_infraction }}
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label">Montant de l'amende</label>
+                        <div class="input-group">
+                            <span class="input-group-text">€</span>
+                            {{ form.montant_amende }}
+                        </div>
+                    </div>
+                    
+                    <div class="col-12">
+                        <label class="form-label">Localisation précise</label>
+                        {{ form.lieu }}
+                        <div class="form-text">Utilisez la syntaxe: [Adresse], [Ville], [Coordonnées GPS]</div>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="{% url 'vehicle_details' vehicule.id %}" 
+                       class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-2"></i>Retour
+                    </a>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-save me-2"></i>Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

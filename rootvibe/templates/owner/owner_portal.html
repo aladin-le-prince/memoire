@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Mes Véhicules{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">🚗 Mes Véhicules Enregistrés</h1>
+        <a href="{% url 'contact' %}" class="btn btn-outline-primary">📧 Nous Contacter</a>
+    </div>
+
+    {% if vehicules %}
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for vehicule in vehicules %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">
+                        {{ vehicule.marque }} {{ vehicule.modele }}
+                        <span class="badge bg-secondary float-end">{{ vehicule.plaque_immatriculation }}</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="mb-1"><strong>Couleur:</strong> {{ vehicule.couleur }}</p>
+                            <p class="mb-1"><strong>Année:</strong> {{ vehicule.annee_fabrication }}</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="mb-1"><strong>Infractions:</strong> {{ vehicule.infraction_set.count }}</p>
+                            <p class="mb-1"><strong>Dernière Mise à Jour:</strong> {{ vehicule.date_ajout|date:"d/m/Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{% url 'owner_vehicle_details' vehicule.id %}" class="btn btn-sm btn-primary">
+                        Voir les Détails ➔
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info mt-4">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-info-circle fs-4 me-3"></i>
+            <div>
+                <h4 class="alert-heading">Aucun véhicule enregistré</h4>
+                <p class="mb-0">Veuillez contacter l'administration pour enregistrer votre premier véhicule.</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

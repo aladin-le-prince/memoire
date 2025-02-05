@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %} Liste des Photos {% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">📸 Liste des Photos</h2>
+
+    <div class="row mt-4">
+        {% for photo in photos %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <img src="{{ photo.image.url }}" class="card-img-top" alt="Photo">
+                <div class="card-body">
+                    <h5 class="card-title">{{ photo.titre }}</h5>
+                    <p class="card-text">{{ photo.description }}</p>
+                    <p class="text-muted">Ajouté le : {{ photo.date_upload|date:"d/m/Y" }}</p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">Aucune photo disponible.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Liste des permis</h2>
+<table>
+    <tr>
+        <th>Numéro</th>
+        <th>Propriétaire</th>
+        <th>Statut</th>
+        <th>Action</th>
+    </tr>
+    {% for permis in permis %}
+    <tr>
+        <td>{{ permis.numero_permis }}</td>
+        <td>{{ permis.proprietaire.nom }} {{ permis.proprietaire.prenom }}</td>
+        <td>{{ permis.get_statut_display }}</td>
+        <td>
+            {% if permis.statut == 'attente' %}
+            <a href="{% url 'valider_permis' permis.id %}">Valider</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

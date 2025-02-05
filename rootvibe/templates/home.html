@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center mt-5">Bienvenue</h1>
+
+        {% if user.is_authenticated %}
+            <p class="text-center">Bonjour, <strong>{{ user.username }}</strong> !</p>
+
+            {% if is_admin %}
+                <div class="text-center mt-3">
+                    <p>Accédez à la gestion des utilisateurs.</p>
+                    <a href="{% url 'user_management' %}" class="btn btn-primary">Gérer les utilisateurs</a>
+                </div>
+            {% elif is_agent %}
+                <div class="text-center mt-3">
+                    <p>Accédez à la recherche de véhicules.</p>
+                    <a href="{% url 'search_vehicle' %}" class="btn btn-success">Rechercher un véhicule</a>
+                </div>
+            {% elif is_proprietaire %}
+                <div class="text-center mt-3">
+                    <p>Bienvenue sur votre portail propriétaire.</p>
+                    <a href="{% url 'owner_portal' %}" class="btn btn-warning">Accéder à mon espace</a>
+                </div>
+            {% endif %}
+        {% else %}
+            <p class="text-center mt-4">
+                Vous n'êtes pas connecté. <a href="{% url 'login' %}">Connectez-vous</a> pour accéder à votre espace.
+            </p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Rechercher un véhicule{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">🔍 Rechercher un véhicule</h1>
+<form method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" class="form-control" name="plaque" placeholder="Plaque (ex: AB-123-CD)">
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </div>
+</form>
+
+{% if vehicules %}
+    <div class="list-group">
+        {% for vehicule in vehicules %}
+            <a href="{% url 'vehicle_details' vehicule.id %}" class="list-group-item list-group-item-action">
+                {{ vehicule.plaque_immatriculation }} - {{ vehicule.marque }} {{ vehicule.modele }}
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">Aucun véhicule trouvé.</div>
+{% endif %}
+{% endblock %}

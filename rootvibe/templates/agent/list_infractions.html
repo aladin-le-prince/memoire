@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Historique des Infractions{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-dark text-white">
+            <h2 class="mb-0">
+                <i class="bi bi-clipboard-data me-2"></i>
+                Historique des Infractions
+                {% if vehicule %}<small class="text-muted">- {{ vehicule.plaque_immatriculation }}</small>{% endif %}
+            </h2>
+        </div>
+        
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Véhicule</th>
+                            <th>Montant</th>
+                            <th>Localisation</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for infraction in infractions %}
+                        <tr>
+                            <td>{{ infraction.date_infraction|date:"d/m/Y H:i" }}</td>
+                            <td>
+                                <span class="badge bg-danger">
+                                    {{ infraction.get_type_infraction_display }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{% url 'vehicle_details' infraction.vehicule.id %}" 
+                                   class="text-decoration-none">
+                                    {{ infraction.vehicule.plaque_immatriculation }}
+                                </a>
+                            </td>
+                            <td class="fw-bold">{{ infraction.montant_amende }} €</td>
+                            <td>
+                                <small class="text-muted">{{ infraction.lieu|truncatechars:30 }}</small>
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-outline-dark">
+                                    <i class="bi bi-printer"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                <i class="bi bi-info-circle fs-1"></i>
+                                <p class="mt-2">Aucune infraction enregistrée</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

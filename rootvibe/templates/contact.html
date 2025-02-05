@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Nous Contacter{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">📬 Contactez l'Administration</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Votre Nom Complet</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Adresse Email</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="subject" class="form-label">Sujet du Message</label>
+                            <input type="text" class="form-control" name="subject" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="message" class="form-label">Votre Message</label>
+                            <textarea class="form-control" name="message" rows="5" required></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="attachment" class="form-label">Pièce Jointe (optionnel)</label>
+                            <input type="file" class="form-control" name="attachment">
+                            <div class="form-text">Formats acceptés : PDF, JPG, PNG (max 5MB)</div>
+                        </div>
+
+
+                        <div class="mb-4">
+                            <div class="captcha-container">
+                                <!-- Intégrez ici votre solution CAPTCHA (ex: Google reCAPTCHA) -->
+                                <div class="g-recaptcha" data-sitekey="VOTRE_CLE_SITE"></div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-send me-2"></i> Envoyer le Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
