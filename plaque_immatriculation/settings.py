@@ -57,7 +57,7 @@ ROOT_URLCONF = 'plaque_immatriculation.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'rootvibe', 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,3 +135,9 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 AUTH_USER_MODEL = 'rootvibe.User'  
+
+#MEDIA_ROOT : Le chemin absolu du dossier où seront enregistrés les fichiers uploadés.
+#MEDIA_URL : L'URL de base pour accéder aux fichiers médias dans tes templates.
+# Répertoire de stockage des fichiers médias (images, vidéos, etc.)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

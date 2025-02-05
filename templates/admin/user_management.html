@@ -32,10 +32,12 @@
                             <td>{{ user.username }}</td>
                             <td>{{ user.email|default:"-" }}</td>
                             <td>
-                                {% if user.is_superuser %}
+                                {% if user.is_admin %}
                                     <span class="badge bg-danger">Admin</span>
-                                {% else %}
-                                    <span class="badge bg-secondary">Utilisateur</span>
+                                {% elif user.is_agent%}
+                                    <span class="badge bg-secondary">Agent</span>
+                                {%else %}
+                                    <span class="badge bg-secondary">Utilisateurs</span>
                                 {% endif %}
                             </td>
                             <td>

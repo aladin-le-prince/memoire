@@ -18,7 +18,9 @@ from django.contrib import admin
 from django.urls import path
 from rootvibe import views
 from django.contrib.auth import views as auth_views
-     
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     # URLs de base
     path('home/', views.home, name='home'),
@@ -58,3 +60,6 @@ urlpatterns = [
 
 ]
 
+#Cette configuration permet à Django de servir les fichiers contenus dans MEDIA_ROOT via l'URL /media/.
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

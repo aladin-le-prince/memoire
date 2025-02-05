@@ -132,7 +132,7 @@ def add_infraction(request, vehicle_id):
 
 def list_photos(request):
     photos = Photo.objects.all()
-    return render(request, 'rootvibe/list_photos.html', {'photos': photos})
+    return render(request, 'agent/list_photos.html', {'photos': photos})
 
 # Ajouter une photo (agent)
 @login_required
@@ -211,7 +211,7 @@ def list_infractions(request):
         # Optionnel : si vous souhaitez afficher le véhicule sélectionné, vous pouvez l'ajouter ici
         'vehicule': None,
     }
-    return render(request, 'rootvibe/list_infractions.html', context)
+    return render(request, 'agent/list_infractions.html', context)
 
 
 @login_required
@@ -220,7 +220,6 @@ def owner_infractions(request):
     Affiche les infractions liées aux véhicules du propriétaire connecté.
     """
     try:
-        # On suppose que l'utilisateur possède une relation vers User via request.user.proprietaire
         proprietaire = request.user
         infractions = Infraction.objects.filter(vehicule__proprietaire=proprietaire)
     except AttributeError:
@@ -231,7 +230,7 @@ def owner_infractions(request):
         'infractions': infractions,
     }
     # Vous pouvez réutiliser le même template que pour list_infractions ou en créer un spécifique
-    return render(request, 'rootvibe/list_infractions.html', context)
+    return render(request, 'agent/list_infractions.html', context)
 
 @login_required
 def demander_permis(request):
@@ -258,7 +257,7 @@ def valider_permis(request, permis_id):
 @login_required
 def liste_permis(request):
     permis = PermisConduire.objects.all()
-    return render(request, 'permis/liste_permis.html', {'permis': permis})
+    return render(request, 'liste_permis.html', {'permis': permis})
 
 
 @login_required
@@ -267,13 +266,14 @@ def demander_plaque(request):
         form = DemandePlaqueForm(request.POST, proprietaire=request.user)
         if form.is_valid():
             demande = form.save(commit=False)
-            demande.proprietaire = request.user.proprietaire
+            demande.proprietaire = request.user
             demande.save()
             return redirect("liste_demandes")
     else:
-        form = DemandePlaqueForm(proprietaire=request.user.proprietaire)
+        form = DemandePlaqueForm(proprietaire=request.user)
 
     return render(request, "plaque/demande_plaque.html", {"form": form})
+
 def liste_demandes(request):
     demandes = DemandePlaque.objects.filter(statut="attente")
     return render(request, "plaque/liste_demandes.html", {"demandes": demandes})
