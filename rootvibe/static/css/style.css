@@ -1,0 +1,103 @@
+/* 🌌 Style futuriste et technologique amélioré */
+
+body {
+    background-color: #ff0000 !important;
+}
+
+/* 🌟 NAVBAR */
+.navbar {
+    background: rgba(0, 0, 0, 0.85);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 🌟 CONTENUS */
+.container {
+    margin-top: 20px;
+}
+
+/* 🌟 CARTES */
+.card {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 12px;
+    backdrop-filter: blur(15px);
+    color: #ffffff;
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.15);
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* 🌟 TABLEAUX */
+.table {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-radius: 8px;
+}
+
+.table th {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transition: 0.3s;
+}
+
+/* 🌟 FORMULAIRES & INPUTS */
+input, select, textarea {
+    background: rgba(255, 255, 255, 0.15);
+    color: #e0e0e0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+input::placeholder, textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+input:focus, select:focus, textarea:focus {
+    border: 1px solid #00b4d8;
+    outline: none;
+    box-shadow: 0 0 12px rgba(0, 180, 216, 0.5);
+}
+
+/* 🌟 BOUTONS */
+.btn-primary {
+    background: linear-gradient(45deg, #00b4d8, #0077b6);
+    border: none;
+    transition: 0.3s;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #0077b6, #00b4d8);
+    box-shadow: 0 0 15px rgba(0, 180, 216, 0.7);
+    transform: scale(1.05);
+}
+
+/* 🌟 ANIMATIONS */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 🌟 PIED DE PAGE */
+.footer {
+    background: rgba(0, 0, 0, 0.85);
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 20px;
+    color: #ffffff;
+}

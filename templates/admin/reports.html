@@ -1,48 +1,72 @@
 {% extends 'base.html' %}
-{% block title %}Statistiques{% endblock %}
+{% block title %}📊 Statistiques{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
-    <h1 class="mt-4 mb-4">📊 Statistiques</h1>
-    
+    <h1 class="mt-4 mb-4 text-center"><i class="bi bi-bar-chart-fill"></i> Statistiques</h1>
+
     <div class="row">
         <div class="col-md-4 mb-4">
-            <div class="card bg-primary text-white shadow">
-                <div class="card-body">
-                    <h5 class="card-title">Véhicules enregistrés</h5>
-                    <p class="display-4">{{ total_vehicules }}</p>
+            <div class="card bg-primary text-white shadow-lg">
+                <div class="card-body text-center">
+                    <h5 class="card-title"><i class="bi bi-car-front-fill"></i> Véhicules enregistrés</h5>
+                    <p class="display-4 fw-bold">{{ total_vehicules }}</p>
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-4 mb-4">
-            <div class="card bg-success text-white shadow">
-                <div class="card-body">
-                    <h5 class="card-title">Infractions totales</h5>
-                    <p class="display-4">{{ total_infractions }}</p>
+            <div class="card bg-danger text-white shadow-lg">
+                <div class="card-body text-center">
+                    <h5 class="card-title"><i class="bi bi-exclamation-triangle-fill"></i> Infractions totales</h5>
+                    <p class="display-4 fw-bold">{{ total_infractions }}</p>
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-4 mb-4">
-            <div class="card bg-info text-white shadow">
-                <div class="card-body">
-                    <h5 class="card-title">Utilisateurs actifs</h5>
-                    <p class="display-4">{{ users.count }}</p>
+            <div class="card bg-success text-white shadow-lg">
+                <div class="card-body text-center">
+                    <h5 class="card-title"><i class="bi bi-person-check-fill"></i> Utilisateurs actifs</h5>
+                    <p class="display-4 fw-bold">{{ users.count }}</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="card shadow mt-4">
-        <div class="card-header bg-secondary text-white">
-            <h5 class="mb-0">Répartition des infractions</h5>
+        <div class="card-header bg-secondary text-white text-center">
+            <h5 class="mb-0"><i class="bi bi-pie-chart-fill"></i> Répartition des infractions</h5>
         </div>
         <div class="card-body">
-            <div class="alert alert-info">
-                (Ici vous pouvez ajouter un graphique avec une librairie comme Chart.js)
-            </div>
+            <canvas id="infractionsChart"></canvas>
         </div>
     </div>
 </div>
+
+<!-- Intégration de Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('infractionsChart').getContext('2d');
+    var infractionsChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [{% for infraction in infraction_categories %}"{{ infraction.nom }}",{% endfor %}],
+            datasets: [{
+                label: 'Infractions',
+                data: [{% for infraction in infraction_categories %}{{ infraction.total }},{% endfor %}],
+                backgroundColor: ['#e63946', '#f4a261', '#2a9d8f', '#264653'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+            }
+        }
+    });
+</script>
 {% endblock %}

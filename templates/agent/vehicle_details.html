@@ -1,35 +1,60 @@
 {% extends 'base.html' %}
-
 {% block title %}Détails du véhicule{% endblock %}
-
 {% block content %}
-<div class="card mb-4">
-    <div class="card-header">
-        <h2>🚗 {{ vehicule.plaque_immatriculation }}</h2>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3"><i class="bi bi-car-front-fill me-2"></i> Véhicule : {{ vehicule.plaque_immatriculation }} <small class="text-muted">{{ vehicule.marque }} {{ vehicule.modele }}</small></h1>
+        <a href="{% url 'owner_portal' %}" class="btn btn-outline-secondary">← Retour</a>
     </div>
-    <div class="card-body">
-        <p><strong>Marque:</strong> {{ vehicule.marque }}</p>
-        <p><strong>Modèle:</strong> {{ vehicule.modele }}</p>
-        <p><strong>Propriétaire:</strong> {{ vehicule.proprietaire.nom }} {{ vehicule.proprietaire.prenom }}</p>
-
-        <h4 class="mt-4">📸 Photos</h4>
-        <div class="row">
-            {% for photo in vehicule.photos.all %}
-                <div class="col-md-4 mb-3">
-                    <div class="card">
-                        <img src="{{ photo.image.url }}" class="card-img-top" alt="{{ photo.get_type_photo_display }}">
-                        <div class="card-body">
-                            <p class="card-text text-center">{{ photo.get_type_photo_display }}</p>
+    <div class="row g-4">
+        <!-- Section Principale --> 
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light"><h5 class="mb-0">📋 Informations Techniques</h5></div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Propriétaire</dt>
+                        <dd class="col-sm-8">{{ vehicule.proprietaire.nom_complet }}</dd>
+                        <dt class="col-sm-4">Couleur</dt>
+                        <dd class="col-sm-8">{{ vehicule.couleur }}</dd>
+                        <dt class="col-sm-4">Date d'Enregistrement</dt>
+                        <dd class="col-sm-8">{{ vehicule.date_ajout|date:"d/m/Y H:i" }}</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="card shadow-sm">
+                <div class="card-header bg-light"><h5 class="mb-0">🚨 Historique des Infractions</h5></div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% for infraction in vehicule.infraction_set.all %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">{{ infraction.type_infraction }}</h6>
+                                    <small class="text-muted">{{ infraction.lieu }} - {{ infraction.date_infraction|date:"d/m/Y" }}</small>
+                                </div>
+                                <span class="badge bg-danger rounded-pill">{{ infraction.montant_amende }} €</span>
+                            </div>
                         </div>
+                        {% empty %}
+                        <div class="list-group-item text-center text-muted py-4">
+                            Aucune infraction enregistrée
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         </div>
-
-        <div class="mt-4">
-            <a href="{% url 'add_infraction' vehicule.id %}" class="btn btn-danger">➕ Ajouter une infraction</a>
-            <a href="{% url 'add_photo' vehicule.id %}" class="btn btn-secondary">📷 Ajouter une photo</a>
-        </div>
-    </div>
-</div>
-{% endblock %}
+        <!-- Sidebar --> 
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light"><h5 class="mb-0">📸 Galerie</h5></div>
+                <div class="card-body">
+                    <div class="row g-2">
+                        {% for photo in vehicule.photos.all %}
+                        <div class="col-6">
+                            <a href="{{ photo.image.url }}" data-bs-toggle="modal" data-bs-target="#photoModal{{ photo.id }}">
+                                <img src="{{ photo.image.url }}" class="img-thumbnail w-100" alt="Photo du véhicule">
+                            </a>
+                        </div>
+                        <!-- Modal -->\n                        <div class="modal fade" id="photoModal{{ photo.id }}" tabindex="-1">\n                            <div class="modal-dialog modal-dialog-centered">\n                                <div class="modal-content">\n                                    <div class="modal-body text-center">\n                                        <img src=\"{{ photo.image.url }}\" class=\"img-fluid\" alt=\"Photo agrandie\">\n                                        <p class=\"mt-2 text-muted small\">{{ photo.get_type_photo_display }}</p>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                        {% empty %}\n                        <div class=\"text-center text-muted py-3\">\n                            Aucune photo disponible\n                        </div>\n                        {% endfor %}\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n{% endblock %}

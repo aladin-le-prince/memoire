@@ -1,11 +1,24 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h2>Faire une demande de plaque</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Faire une demande de plaque</h2>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Soumettre la demande</button>
-</form>
-
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.as_p }}
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Soumettre la demande
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

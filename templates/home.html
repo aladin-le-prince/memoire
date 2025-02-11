@@ -1,32 +1,19 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
+{% block title %}Accueil - AutoReg RDC{% endblock %}
 {% block content %}
-    <div class="container">
-        <h1 class="text-center mt-5">Bienvenue</h1>
-
-        {% if user.is_authenticated %}
-            <p class="text-center">Bonjour, <strong>{{ user.username }}</strong> !</p>
-
-            {% if is_admin %}
-                <div class="text-center mt-3">
-                    <p>Accédez à la gestion des utilisateurs.</p>
-                    <a href="{% url 'user_management' %}" class="btn btn-primary">Gérer les utilisateurs</a>
-                </div>
-            {% elif is_agent %}
-                <div class="text-center mt-3">
-                    <p>Accédez à la recherche de véhicules.</p>
-                    <a href="{% url 'search_vehicle' %}" class="btn btn-success">Rechercher un véhicule</a>
-                </div>
-            {% elif is_proprietaire %}
-                <div class="text-center mt-3">
-                    <p>Bienvenue sur votre portail propriétaire.</p>
-                    <a href="{% url 'owner_portal' %}" class="btn btn-warning">Accéder à mon espace</a>
-                </div>
-            {% endif %}
-        {% else %}
-            <p class="text-center mt-4">
-                Vous n'êtes pas connecté. <a href="{% url 'login' %}">Connectez-vous</a> pour accéder à votre espace.
-            </p>
+<div class="text-center mt-5 animate__animated animate__fadeIn">
+    <h1 class="fw-bold">Bienvenue sur AutoReg RDC</h1>
+    <p class="lead">Système futuriste de gestion des véhicules et infractions.</p>
+    {% if user.is_authenticated %}
+        {% if user.is_admin %}
+            <a href="{% url 'user_management' %}" class="btn btn-primary btn-lg">Accéder à la Gestion Utilisateurs</a>
+        {% elif user.is_agent %}
+            <a href="{% url 'search_vehicle' %}" class="btn btn-success btn-lg">Rechercher un Véhicule</a>
+        {% elif user.is_owner %}
+            <a href="{% url 'owner_portal' %}" class="btn btn-warning btn-lg">Accéder à Mon Espace</a>
         {% endif %}
-    </div>
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-success btn-lg">Se Connecter</a>
+    {% endif %}
+</div>
 {% endblock %}

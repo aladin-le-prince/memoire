@@ -22,6 +22,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     # URLs de base
     path('home/', views.home, name='home'),
     path('login/', views.login_view, name='login'),
@@ -52,14 +53,17 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('photos/', views.list_photos, name='list_photos'),
     path('photos/delete/<int:photo_id>/', views.delete_photo, name='delete_photo'),
+    path('add_vehicule/', views.add_vehicule, name='add_vehicule'),
     
     # URLs pour la plaque
     path("demande-plaque/", views.demander_plaque, name="demander_plaque"),
     path("demandes/", views.liste_demandes, name="liste_demandes"),
     path("approuver-demande/<int:demande_id>/", views.approuver_demande, name="approuver_demande"),
-
+    
+    # URL pour le paiement 
+    path('paiement/', views.paiement_view, name='paiement'),
 ]
 
-#Cette configuration permet à Django de servir les fichiers contenus dans MEDIA_ROOT via l'URL /media/.
+# Cette configuration permet à Django de servir les fichiers contenus dans MEDIA_ROOT via l'URL /media/.
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

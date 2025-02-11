@@ -1,26 +1,51 @@
 {% extends 'base.html' %}
 
-{% block title %} Liste des Photos {% endblock %}
+{% block title %}Liste des Photos{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-    <h2 class="text-center">📸 Liste des Photos</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold"><i class="bi bi-images me-2"></i>Liste des Photos</h2>
+        <a href="{% url 'ajouter_photo' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-2"></i> Ajouter une photo
+        </a>
+    </div>
 
-    <div class="row mt-4">
+    <div class="row">
         {% for photo in photos %}
         <div class="col-md-4 mb-4">
-            <div class="card shadow-sm">
-                <img src="{{ photo.image.url }}" class="card-img-top" alt="Photo">
+            <div class="card shadow-sm border-0">
+                <a href="{{ photo.image.url }}" target="_blank">
+                    <img src="{{ photo.image.url }}" class="card-img-top img-fluid rounded" alt="Photo">
+                </a>
                 <div class="card-body">
-                    <h5 class="card-title">{{ photo.titre }}</h5>
-                    <p class="card-text">{{ photo.description }}</p>
-                    <p class="text-muted">Ajouté le : {{ photo.date_upload|date:"d/m/Y" }}</p>
+                    <h5 class="card-title text-primary">{{ photo.titre }}</h5>
+                    <p class="card-text text-muted">{{ photo.description|truncatechars:80 }}</p>
+                    <p class="text-end text-secondary small">📅 Ajouté le {{ photo.date_upload|date:"d/m/Y" }}</p>
                 </div>
             </div>
         </div>
         {% empty %}
-        <p class="text-center">Aucune photo disponible.</p>
+        <div class="col-12 text-center text-muted py-5">
+            <i class="bi bi-image fs-1"></i>
+            <p class="mt-2">Aucune photo disponible.</p>
+        </div>
         {% endfor %}
     </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-dark">
+            <i class="bi bi-arrow-left me-2"></i>Retour au tableau de bord
+        </a>
+    </div>
 </div>
+
+<style>
+    .card img {
+        transition: transform 0.3s ease-in-out;
+    }
+    .card img:hover {
+        transform: scale(1.05);
+    }
+</style>
 {% endblock %}

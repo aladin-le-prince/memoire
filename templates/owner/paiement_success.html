@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Paiement Réussi{% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0"><i class="bi bi-check-circle-fill"></i> Paiement Réussi</h4>
+        </div>
+        <div class="card-body">
+          <p class="lead">Votre paiement a été effectué avec succès !</p>
+          <hr>
+          <h5>Détails du paiement :</h5>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Référence :</strong> {{ payment_response.reference|default:"N/A" }}</li>
+            <li class="list-group-item"><strong>Montant :</strong> {{ payment_response.amount|default:"N/A" }} {{ payment_response.currency|default:"" }}</li>
+            <li class="list-group-item"><strong>Statut :</strong> {{ payment_response.status|default:"N/A" }}</li>
+            <li class="list-group-item"><strong>Date :</strong> {{ payment_response.date|default:"N/A" }}</li>
+          </ul>
+          <div class="mt-4 d-flex justify-content-between">
+            <a href="{% url 'owner_portal' %}" class="btn btn-primary"><i class="bi bi-house-door-fill"></i> Retour au Portail</a>
+            <a href="{% url 'paiement' %}" class="btn btn-outline-secondary"><i class="bi bi-arrow-repeat"></i> Effectuer un autre paiement</a>
+          </div>
+        </div>
+      </div>
+      <footer class="mt-3 text-center text-muted">
+        <small>&copy; {{ now|date:"Y" }} AutoReg RDC - Tous droits réservés.</small>
+      </footer>
+    </div>
+  </div>
+</div>
+{% endblock %}

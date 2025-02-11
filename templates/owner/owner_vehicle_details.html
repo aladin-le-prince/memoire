@@ -1,44 +1,29 @@
 {% extends 'base.html' %}
-{% block title %}Détails du Véhicule{% endblock %}
-
+{% block title %}Détails du véhicule{% endblock %}
 {% block content %}
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3">
-            🚘 {{ vehicule.plaque_immatriculation }}
-            <small class="text-muted">{{ vehicule.marque }} {{ vehicule.modele }}</small>
-        </h1>
+        <h1 class="h3"><i class="bi bi-car-front-fill me-2"></i> Véhicule : {{ vehicule.plaque_immatriculation }} <small class="text-muted">{{ vehicule.marque }} {{ vehicule.modele }}</small></h1>
         <a href="{% url 'owner_portal' %}" class="btn btn-outline-secondary">← Retour</a>
     </div>
-
     <div class="row g-4">
-        <!-- Section Principale -->
+        <!-- Section Principale --> 
         <div class="col-lg-8">
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">📋 Informations Techniques</h5>
-                </div>
+                <div class="card-header bg-light"><h5 class="mb-0">📋 Informations Techniques</h5></div>
                 <div class="card-body">
                     <dl class="row">
                         <dt class="col-sm-4">Propriétaire</dt>
                         <dd class="col-sm-8">{{ vehicule.proprietaire.nom_complet }}</dd>
-
                         <dt class="col-sm-4">Couleur</dt>
                         <dd class="col-sm-8">{{ vehicule.couleur }}</dd>
-
-                        <dt class="col-sm-4">Année de Fabrication</dt>
-                        <dd class="col-sm-8">{{ vehicule.annee_fabrication }}</dd>
-
                         <dt class="col-sm-4">Date d'Enregistrement</dt>
                         <dd class="col-sm-8">{{ vehicule.date_ajout|date:"d/m/Y H:i" }}</dd>
                     </dl>
                 </div>
             </div>
-
             <div class="card shadow-sm">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">🚨 Historique des Infractions</h5>
-                </div>
+                <div class="card-header bg-light"><h5 class="mb-0">🚨 Historique des Infractions</h5></div>
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         {% for infraction in vehicule.infraction_set.all %}
@@ -52,22 +37,16 @@
                             </div>
                         </div>
                         {% empty %}
-                        <div class="list-group-item text-center text-muted py-4">
-                            Aucune infraction enregistrée
-                        </div>
+                        <div class="list-group-item text-center text-muted py-4">Aucune infraction enregistrée</div>
                         {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
-
-
-        <!-- Sidebar -->
+        <!-- Sidebar --> 
         <div class="col-lg-4">
             <div class="card shadow-sm">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">📸 Galerie</h5>
-                </div>
+                <div class="card-header bg-light"><h5 class="mb-0">📸 Galerie</h5></div>
                 <div class="card-body">
                     <div class="row g-2">
                         {% for photo in vehicule.photos.all %}
@@ -76,27 +55,7 @@
                                 <img src="{{ photo.image.url }}" class="img-thumbnail w-100" alt="Photo du véhicule">
                             </a>
                         </div>
-                        
-                        <!-- Modal -->
-                        <div class="modal fade" id="photoModal{{ photo.id }}" tabindex="-1">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-body text-center">
-                                        <img src="{{ photo.image.url }}" class="img-fluid" alt="Photo agrandie">
-                                        <p class="mt-2 text-muted small">{{ photo.get_type_photo_display }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% empty %}
-                        <div class="text-center text-muted py-3">
-                            Aucune photo disponible
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
+                        <!-- Modal -->\n                        <div class="modal fade" id="photoModal{{ photo.id }}" tabindex="-1">\n                            <div class="modal-dialog modal-dialog-centered">\n                                <div class="modal-content">\n                                    <div class="modal-body text-center">\n                                        <img src=\"{{ photo.image.url }}\" class=\"img-fluid\" alt=\"Photo agrandie\">\n                                        <p class=\"mt-2 text-muted small\">{{ photo.get_type_photo_display }}</p>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                        {% empty %}\n                        <div class="text-center text-muted py-3">Aucune photo disponible</div>\n                        {% endfor %}\n                    </div>\n                </div>\n            </div>\n        </div>
     </div>
 </div>
 {% endblock %}

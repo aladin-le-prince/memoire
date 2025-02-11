@@ -13,27 +13,32 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
+# ------------------------------------------------------------------------
+# 📌 Construction des chemins à l'intérieur du projet
+# ------------------------------------------------------------------------
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Base du projet (répertoire racine)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# ------------------------------------------------------------------------
+# 📌 Sécurité et configuration de base
+# ------------------------------------------------------------------------
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
+# ⚠️ Clé secrète pour le chiffrement (changer en production !)
 SECRET_KEY = 'django-insecure-3(*u!^)*-b$co!nf#d*22f@o1^8vpiq_at-gnj@x+!63(y3^(n'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# ⚠️ Désactiver DEBUG en production !
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Définition des hôtes autorisés (mettre le domaine en production)
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
-
-# Application definition
+# ------------------------------------------------------------------------
+# 📌 Applications Django
+# ------------------------------------------------------------------------
 
 INSTALLED_APPS = [
-    'rootvibe',
+    'rootvibe',  # 🟢 Application principale de ton projet
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+# ------------------------------------------------------------------------
+# 📌 Middlewares (Gestion de la sécurité et des requêtes)
+# ------------------------------------------------------------------------
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -52,16 +61,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# ------------------------------------------------------------------------
+# 📌 URL racine de l'application
+# ------------------------------------------------------------------------
+
 ROOT_URLCONF = 'plaque_immatriculation.urls'
+
+# ------------------------------------------------------------------------
+# 📌 Configuration des templates
+# ------------------------------------------------------------------------
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # 📂 Répertoire des templates personnalisés
+        'APP_DIRS': True,  # 📌 Recherche aussi les templates dans les applications installées
         'OPTIONS': {
             'context_processors': [
-                
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -70,18 +86,23 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                'rootvibe.context_processors.user_groups',
+                'rootvibe.context_processors.user_groups',  # ⚡ Ajout du context processor personnalisé
             ],
         },
     },
 ]
 
+# ------------------------------------------------------------------------
+# 📌 Configuration WSGI (Serveur Web)
+# ------------------------------------------------------------------------
+
 WSGI_APPLICATION = 'plaque_immatriculation.wsgi.application'
 
+# ------------------------------------------------------------------------
+# 📌 Base de données
+# ------------------------------------------------------------------------
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+# ⚠️ SQLite utilisé pour le développement (remplacer par PostgreSQL en production)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -89,55 +110,70 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
+# ------------------------------------------------------------------------
+# 📌 Validation des mots de passe (sécurité)
+# ------------------------------------------------------------------------
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# ------------------------------------------------------------------------
+# 📌 Paramètres régionaux et fuseau horaire
+# ------------------------------------------------------------------------
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
+# 🌍 Langue et fuseau horaire
 LANGUAGE_CODE = 'fr-fr'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
+# ------------------------------------------------------------------------
+# 📌 Fichiers statiques et médias (CSS, JS, images, uploads)
+# ------------------------------------------------------------------------
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
+# 📁 Gestion des fichiers statiques
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # 📌 Dossier où Django cherche les fichiers statiques
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # 📌 Dossier utilisé pour collecter tous les fichiers statiques en production
 
-STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'login'
-AUTH_USER_MODEL = 'rootvibe.User'  
-
-#MEDIA_ROOT : Le chemin absolu du dossier où seront enregistrés les fichiers uploadés.
-#MEDIA_URL : L'URL de base pour accéder aux fichiers médias dans tes templates.
-# Répertoire de stockage des fichiers médias (images, vidéos, etc.)
+# 📁 Gestion des fichiers médias (uploads des utilisateurs)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# ------------------------------------------------------------------------
+# 📌 Gestion des utilisateurs et authentification
+# ------------------------------------------------------------------------
+
+# ⚡ Utilisation d'un modèle utilisateur personnalisé
+AUTH_USER_MODEL = 'rootvibe.User'
+
+# 📌 Configuration des URLs d'authentification
+LOGIN_URL = 'login'  # Page de connexion
+LOGIN_REDIRECT_URL = 'home'  # Page après connexion
+LOGOUT_REDIRECT_URL = 'login'  # Page après déconnexion
+
+# ------------------------------------------------------------------------
+# 📌 Sécurité et protection CSRF
+# ------------------------------------------------------------------------
+
+# 🔒 Sécurisation des sessions et des cookies
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SESSION_COOKIE_AGE = 86400  # 🕒 1 jour (en secondes)
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_SECURE = False  # ⚠️ Mettre sur True en production avec HTTPS
+CSRF_COOKIE_SECURE = False  # ⚠️ Mettre sur True en production avec HTTPS
+CSRF_USE_SESSIONS = True  # 🔒 Stocke le token CSRF dans la session utilisateur
+
+# 📌 Pour éviter l'erreur CSRF (ex: lors de connexions locales)
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000", "http://localhost:8000"]
+
+# ------------------------------------------------------------------------
+# 📌 Configuration des modèles
+# ------------------------------------------------------------------------
+
+# 🔹 Clé par défaut pour les nouveaux modèles de la base de données
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

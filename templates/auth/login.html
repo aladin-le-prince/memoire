@@ -1,37 +1,53 @@
 {% extends 'base.html' %}
 {% block title %}Connexion{% endblock %}
-
 {% block content %}
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">🔑 Connexion</h4>
+        <div class="col-md-5">
+            <div class="card shadow-lg animate__animated animate__fadeIn">
+                <div class="card-header bg-dark text-white text-center">
+                    <h4 class="mb-0"><i class="bi bi-person-lock me-2"></i> Connexion</h4>
                 </div>
                 <div class="card-body">
-                    <form method="post">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} text-center">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                    <form method="post" id="loginForm">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="username" class="form-label">Nom d'utilisateur</label>
-                            <input type="text" class="form-control" name="username" required>
+                            <label for="username" class="form-label"><i class="bi bi-person"></i> Nom d'utilisateur</label>
+                            <input type="text" class="form-control" name="username" required placeholder="Entrez votre nom">
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Mot de passe</label>
-                            <input type="password" class="form-control" name="password" required>
+                            <label for="password" class="form-label"><i class="bi bi-key"></i> Mot de passe</label>
+                            <input type="password" class="form-control" name="password" required placeholder="Votre mot de passe">
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+                        <button type="submit" class="btn btn-dark w-100" id="submitBtn">
+                            <span id="btnText"><i class="bi bi-box-arrow-in-right"></i> Se connecter</span>
+                            <span id="btnSpinner" class="spinner-border spinner-border-sm d-none"></span>
+                        </button>
                     </form>
                     <div class="mt-3 text-center">
-                        <a href="{% url 'password_reset' %}" class="text-decoration-none">Mot de passe oublié ?</a>
+                        <a href="{% url 'password_reset' %}" class="text-decoration-none text-danger"><i class="bi bi-question-circle"></i> Mot de passe oublié ?</a>
                     </div>
                     <hr>
                     <div class="text-center">
-                        <p class="mb-0">Pas de compte ? <a href="{% url 'register' %}">S'inscrire</a></p>
+                        <p class="mb-0">Pas de compte ? <a href="{% url 'register' %}" class="text-primary">S'inscrire</a></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<style>
+    .form-control:focus { border-color: #000; box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); }
+</style>
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function() {
+        document.getElementById("btnText").classList.add("d-none");
+        document.getElementById("btnSpinner").classList.remove("d-none");
+    });
+</script>
 {% endblock %}
