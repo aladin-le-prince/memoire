@@ -137,7 +137,8 @@ USE_TZ = True
 
 # 📁 Gestion des fichiers statiques
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # 📌 Dossier où Django cherche les fichiers statiques
+STATICFILES_DIRS = [os.path.join(BASE_DIR,  'rootvibe','static')]
+ # 📌 Dossier où Django cherche les fichiers statiques
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # 📌 Dossier utilisé pour collecter tous les fichiers statiques en production
 
 # 📁 Gestion des fichiers médias (uploads des utilisateurs)
@@ -153,7 +154,7 @@ AUTH_USER_MODEL = 'rootvibe.User'
 
 # 📌 Configuration des URLs d'authentification
 LOGIN_URL = 'login'  # Page de connexion
-LOGIN_REDIRECT_URL = 'home'  # Page après connexion
+LOGIN_REDIRECT_URL = "/home/"  # Page après connexion
 LOGOUT_REDIRECT_URL = 'login'  # Page après déconnexion
 
 # ------------------------------------------------------------------------

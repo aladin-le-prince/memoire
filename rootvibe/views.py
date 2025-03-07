@@ -7,21 +7,6 @@ from django.views.decorators.http import require_http_methods
 import requests
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-
-@csrf_exempt  # 🚨 TEMPORAIRE : Désactive la protection CSRF pour tester
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            return render(request, 'auth/login.html', {'error': 'Identifiants invalides'})
-    return render(request, 'auth/login.html')
-
-
 from .models import PermisConduire, User, DemandePlaque, Vehicule, Infraction, Photo,PaymentTransaction
 from .forms import (
     VehiculeForm, InfractionForm, PhotoForm,
@@ -154,16 +139,23 @@ def reports(request):
 
 @login_required
 def search_vehicle(request):
-    if request.method == 'POST':
-        plaque = request.POST.get('plaque', '')
-        vehicules = Vehicule.objects.filter(plaque_immatriculation__icontains=plaque)
-        return render(request, 'agent/search_vehicle.html', {'vehicules': vehicules})
-    return render(request, 'agent/search_vehicle.html')
+    plaque = request.GET.get('plaque', '')  # Utilisation de GET au lieu de POST
+    vehicules = Vehicule.objects.filter(plaque_immatriculation__icontains=plaque) if plaque else None
+    return render(request, 'agent/search_vehicle.html', {'vehicules': vehicules})
+
+
 
 @login_required
 def vehicle_details(request, vehicle_id):
     vehicule = get_object_or_404(Vehicule, id=vehicle_id)
-    return render(request, 'agent/vehicle_details.html', {'vehicule': vehicule})
+    proprietaire = vehicule.proprietaire  # Récupération du propriétaire du véhicule
+    return render(request, 'agent/vehicle_details.html', {'vehicule': vehicule, 'proprietaire': proprietaire})
+
+@login_required
+def owner_details(request, owner_id):
+    # Récupère le propriétaire (client) en utilisant son ID
+    owner = get_object_or_404(User, id=owner_id)
+    return render(request, 'agent/owner_details.html', {'owner': owner})
 
 @login_required
 def add_infraction(request, vehicle_id):

@@ -46,6 +46,7 @@ urlpatterns = [
 
     # URLs pour le propriétaire
     path('owner/', views.owner_portal, name='owner_portal'),
+    path('proprietaire/<int:owner_id>/', views.owner_details, name='owner_details'),
     path('owner/vehicle/<int:vehicle_id>/', views.owner_vehicle_details, name='owner_vehicle_details'),
     path('owner/infractions/', views.owner_infractions, name='owner_infractions'),
 

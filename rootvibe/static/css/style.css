@@ -1,29 +1,46 @@
-/* 🌌 Style futuriste et technologique amélioré */
-
+/* ---------- Style global ---------- */
 body {
-    background-color: #ff0000 !important;
+    font-family: 'Orbitron', sans-serif;
+    background: var(--background-color);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
 }
 
-/* 🌟 NAVBAR */
+/* Variables pour Light Mode et Dark Mode */
+:root {
+    --background-color: #f8f9fa;
+    --text-color: #212529;
+    --card-background: #ffffff;
+    --btn-primary-bg: #007bff;
+    --navbar-bg: rgba(0, 0, 0, 0.85);
+}
+body.dark-mode {
+    --background-color: #1a1a2e;
+    --text-color: #e0e0e0;
+    --card-background: rgba(255, 255, 255, 0.08);
+    --btn-primary-bg: #00b4d8;
+    --navbar-bg: rgba(0, 0, 0, 0.95);
+}
+
+/* ---------- Navbar ---------- */
 .navbar {
-    background: rgba(0, 0, 0, 0.85);
+    background: var(--navbar-bg);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* 🌟 CONTENUS */
+/* ---------- Containers ---------- */
 .container {
     margin-top: 20px;
 }
 
-/* 🌟 CARTES */
+/* ---------- Cards ---------- */
 .card {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--card-background);
     border: none;
     border-radius: 12px;
     backdrop-filter: blur(15px);
-    color: #ffffff;
+    color: var(--text-color);
 }
-
 .card-header {
     background: rgba(255, 255, 255, 0.15);
     text-transform: uppercase;
@@ -31,73 +48,126 @@ body {
     letter-spacing: 2px;
 }
 
-/* 🌟 TABLEAUX */
+/* ---------- Tableaux ---------- */
 .table {
     background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
+    color: var(--text-color);
     border-radius: 8px;
 }
-
 .table th {
     background: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
+    color: var(--text-color);
     text-transform: uppercase;
 }
-
 .table tbody tr:hover {
     background: rgba(255, 255, 255, 0.3);
     transition: 0.3s;
 }
 
-/* 🌟 FORMULAIRES & INPUTS */
+/* ---------- Formulaires & Inputs ---------- */
 input, select, textarea {
     background: rgba(255, 255, 255, 0.15);
-    color: #e0e0e0;
+    color: var(--text-color);
     border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 10px;
     border-radius: 5px;
 }
-
 input::placeholder, textarea::placeholder {
     color: rgba(255, 255, 255, 0.6);
 }
-
 input:focus, select:focus, textarea:focus {
     border: 1px solid #00b4d8;
     outline: none;
     box-shadow: 0 0 12px rgba(0, 180, 216, 0.5);
 }
 
-/* 🌟 BOUTONS */
+/* ---------- Boutons ---------- */
 .btn-primary {
-    background: linear-gradient(45deg, #00b4d8, #0077b6);
+    background: linear-gradient(45deg, var(--btn-primary-bg), #0077b6);
     border: none;
     transition: 0.3s;
     font-weight: bold;
     text-transform: uppercase;
 }
-
 .btn-primary:hover {
-    background: linear-gradient(45deg, #0077b6, #00b4d8);
+    background: linear-gradient(45deg, #0077b6, var(--btn-primary-bg));
     box-shadow: 0 0 15px rgba(0, 180, 216, 0.7);
     transform: scale(1.05);
 }
 
-/* 🌟 ANIMATIONS */
+/* ---------- Animations ---------- */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
-
 .animate-in {
     animation: fadeIn 0.5s ease-in-out;
 }
 
-/* 🌟 PIED DE PAGE */
-.footer {
-    background: rgba(0, 0, 0, 0.85);
-    text-align: center;
-    padding: 15px 0;
-    margin-top: 20px;
-    color: #ffffff;
+/* ---------- Carrousel ---------- */
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+    margin: 20px 0;
+    border-radius: 10px;
+}
+.carousel-slide {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+.carousel-slide img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+.carousel-btn.prev {
+    left: 10px;
+}
+.carousel-btn.next {
+    right: 10px;
+}
+
+/* ---------- Dark Mode Toggle ---------- */
+#darkModeToggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--btn-primary-bg);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    transition: transform 0.3s;
+}
+#darkModeToggle:hover {
+    transform: scale(1.1);
+}
+
+/* ---------- Mini-jeu styles ---------- */
+.mini-game {
+    margin-top: 40px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+.mini-game h2 {
+    font-size: 1.75rem;
+}
+.mini-game button {
+    margin: 5px;
 }

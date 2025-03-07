@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Détails du Propriétaire{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="h3">Propriétaire : {{ owner.nom }} {{ owner.prenom }}</h1>
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light"><h5 class="mb-0">👤 Informations du Propriétaire</h5></div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">Nom</dt>
+                <dd class="col-sm-8">{{ owner.nom }}</dd>
+                <dt class="col-sm-4">Prénom</dt>
+                <dd class="col-sm-8">{{ owner.prenom }}</dd>
+                <dt class="col-sm-4">Adresse</dt>
+                <dd class="col-sm-8">{{ owner.adresse }}</dd>
+                <dt class="col-sm-4">Numéro de téléphone</dt>
+                <dd class="col-sm-8">{{ owner.numero_telephone }}</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+{% endblock %}
