@@ -14,7 +14,7 @@
                 <div class="card-body">
                     <dl class="row">
                         <dt class="col-sm-4">Propriétaire</dt>
-                        <dd class="col-sm-8">{{ vehicule.proprietaire.nom_complet }}</dd>
+                        <dd class="col-sm-8">{{ proprio }}</dd>
                         <dt class="col-sm-4">Couleur</dt>
                         <dd class="col-sm-8">{{ vehicule.couleur }}</dd>
                         <dt class="col-sm-4">Date d'Enregistrement</dt>
@@ -55,7 +55,7 @@
                                 <img src="{{ photo.image.url }}" class="img-thumbnail w-100" alt="Photo du véhicule">
                             </a>
                         </div>
-                        <!-- Modal -->\n                        <div class="modal fade" id="photoModal{{ photo.id }}" tabindex="-1">\n                            <div class="modal-dialog modal-dialog-centered">\n                                <div class="modal-content">\n                                    <div class="modal-body text-center">\n                                        <img src=\"{{ photo.image.url }}\" class=\"img-fluid\" alt=\"Photo agrandie\">\n                                        <p class=\"mt-2 text-muted small\">{{ photo.get_type_photo_display }}</p>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                        {% empty %}\n                        <div class="text-center text-muted py-3">Aucune photo disponible</div>\n                        {% endfor %}\n                    </div>\n                </div>\n            </div>\n        </div>
+                     <div class="modal fade" id="photoModal{{ photo.id }}" tabindex="-1">                        <div class="modal-dialog modal-dialog-centered">                               <div class="modal-content">                                    <div class="modal-body text-center">                                       <img src=\"{{ photo.image.url }}\" class=\"img-fluid\" alt=\"Photo agrandie\">                                        <p class=\"mt-2 text-muted small\">{{ photo.get_type_photo_display }}</p>                                    </div>                                </div>                          </div>                       </div>                       {% empty %}                        <div class="text-center text-muted py-3">Aucune photo disponible</div>                        {% endfor %}                   </div>               </div>          </div>      </div>
     </div>
 </div>
 {% endblock %}

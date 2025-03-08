@@ -149,6 +149,7 @@ def search_vehicle(request):
 def vehicle_details(request, vehicle_id):
     vehicule = get_object_or_404(Vehicule, id=vehicle_id)
     proprietaire = vehicule.proprietaire  # Récupération du propriétaire du véhicule
+    print("vehicule" + vehicule)
     return render(request, 'agent/vehicle_details.html', {'vehicule': vehicule, 'proprietaire': proprietaire})
 
 @login_required
@@ -234,7 +235,9 @@ def owner_portal(request):
 @login_required
 def owner_vehicle_details(request, vehicle_id):
     vehicule = get_object_or_404(Vehicule, id=vehicle_id, proprietaire=request.user)
-    return render(request, 'owner/owner_vehicle_details.html', {'vehicule': vehicule})
+    print("vehicule" + str(vehicule.proprietaire))
+    proprio= str(vehicule.proprietaire)
+    return render(request, 'owner/owner_vehicle_details.html', {'vehicule': vehicule,'proprio':proprio})
 
 @login_required
 def add_vehicule(request):
