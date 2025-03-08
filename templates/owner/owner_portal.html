@@ -23,7 +23,7 @@
                         <span class="badge bg-dark p-2">{{ vehicule.plaque_immatriculation }}</span>
                     </p>
                     <p><strong>Couleur :</strong> {{ vehicule.couleur }}</p>
-                    <p><strong>Année :</strong> {{ vehicule.annee_fabrication }}</p>
+                    
                     <p>
                         <strong>Infractions :</strong>
                         <span class="badge bg-{% if vehicule.infraction_set.count > 0 %}danger{% else %}success{% endif %}">

@@ -55,8 +55,8 @@
             <div class="card shadow-sm mb-4">
                 <div class="card-header bg-light"><h5 class="mb-0">👤 Propriétaire du Véhicule</h5></div>
                 <div class="card-body text-center">
-                    {% if vehicule.proprietaire %}
-                        <p class="text-muted">👤 <a href="{% url 'owner_details' owner_id=vehicule.proprietaire.id %}">{{ vehicule.proprietaire.nom }} {{ vehicule.proprietaire.prenom }}</a></p>
+                    {% if proprio %}
+                        <p class="text-muted">👤 {{ proprio }}</p>
                     {% else %}
                         <p class="text-muted">Propriétaire non disponible</p>
                     {% endif %}
